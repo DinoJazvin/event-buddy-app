@@ -1,0 +1,185 @@
+openapi: 3.1.0
+info:
+  title: Events Manager API
+  version: 1.0.0
+  description: A simple REST API for managing users.
+servers:
+  - url: http://localhost:3000
+
+paths:
+  /events:
+    get:
+      summary: List all events
+      responses:
+        '200':
+          description: A list of events.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties: 
+                    id:
+                      type: string
+                    title:
+                      type: string
+                    date:
+                      type: string
+                    location:
+                      type: string
+                    attendees:
+                      type: array
+                      items:
+                        type: string
+    post:
+      summary: Create a new event
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                date:
+                  type: string
+                location:
+                  type: string
+      responses:
+        '201':
+          description: Event created pal.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  title:
+                    type: string
+                  date:
+                    type: string
+                  location:
+                    type: string
+                  attendees:
+                    type: array
+                    items:
+                      type: string
+  /events/{eventId}:
+    get:
+      summary: Get one events
+      parameters:
+        - name: eventId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: return one event.
+        '404':
+          description: event not found.
+    put:
+      summary: update one event
+      parameters:
+        - name: eventId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                date:
+                  type: string
+                location:
+                  type: string
+      responses:
+        '200':
+          description: return edited event.
+        '404':
+          description: event not found.
+    patch:
+      summary: update one attribute of one event
+      parameters:
+        - name: eventId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                date:
+                  type: string
+                location:
+                  type: string
+      responses:
+        '200':
+          description: return edited event.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties: 
+                    id:
+                      type: string
+                    title:
+                      type: string
+                    date:
+                      type: string
+                    location:
+                      type: string
+                    attendees:
+                      type: array
+                      items:
+                        type: string
+
+        '404':
+          description: event not found.
+    delete:
+      summary: Delete an event
+      parameters:
+        - name: eventId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Deleted event
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties: 
+                    id:
+                      type: string
+                    title:
+                      type: string
+                    date:
+                      type: string
+                    location:
+                      type: string
+                    attendees:
+                      type: array
+                      items:
+                        type: string
