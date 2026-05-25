@@ -26,10 +26,37 @@ function App() {
     }))
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log('Creating event:', formData)
-    // Add logic to call your Express backend here
+    
+    try {
+      const response = await fetch('http://localhost:3000/events', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log('Success:', result);
+        alert('Event created successfully!');
+        // Clear the form
+        setFormData({
+          title: '',
+          date: '',
+          location: ''
+        });
+      } else {
+        const errorData = await response.json();
+        console.error('Server error:', errorData);
+        alert('Failed to create event.');
+      }
+    } catch (error) {
+      console.error('Network error:', error);
+      alert('Could not connect to the server.');
+    }
   }
 
   return (
