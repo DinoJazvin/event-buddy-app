@@ -2,21 +2,21 @@ const express = require("express")
 const app2 = express()
 const cors = require("cors")
 const swaggerUi = require("swagger-ui-express")
-const pino = require("pino-http")({
-    // customLogLevel: function (req, res) {
-    //     if (res.statusCode >= 500) return "error"
-    //     if (res.statusCode >= 400) return "warn"
-    //     return "info"
-    // }
-  serializers: {
-    req(req) {
-      return {
-        method: req.method,
-        url: req.url
-      }
-    }
-  }
-})
+// const pino = require("pino-http")({
+//     // customLogLevel: function (req, res) {
+//     //     if (res.statusCode >= 500) return "error"
+//     //     if (res.statusCode >= 400) return "warn"
+//     //     return "info"
+//     // }
+//   serializers: {
+//     req(req) {
+//       return {
+//         method: req.method,
+//         url: req.url
+//       }
+//     }
+//   }
+// })
 
 //db content
 const pool = require("./db")
@@ -29,7 +29,7 @@ const spec = yaml.load(fs.readFileSync("./event-planner-spec.yaml", "utf8"))
 
 app2.use(cors())
 app2.use(express.json())
-app2.use(pino)
+// app2.use(pino)
 
 
 // let events = []
@@ -56,14 +56,14 @@ app2.get("/events", async (req, res) => {
 
     // if (location)
     //     myEvents = events.filter(theEvent => theEvent.location === location)
-    const token = req.headers.authorization
+    // const token = req.headers.authorization
 
     //401 "unauthorized"
-    if (!token) {
-        return res.status(401).json({
-            message: "no token provided"
-        })
-    }
+    // if (!token) {
+    //     return res.status(401).json({
+    //         message: "no token provided"
+    //     })
+    // }
 
     const events = await getAllEvents()
 
