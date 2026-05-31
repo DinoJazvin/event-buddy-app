@@ -18,12 +18,31 @@ function App() {
     location: ''
   })
 
+  const [events, setEvents] = useState([])
+
   const handleChange = (e) => {
     const { name, value } = e.target
     setFormData(prev => ({
       ...prev,
       [name]: value
     }))
+  }
+
+  const fetchEvents = async (e) => {
+    try {
+      const response = await fetch('http://localhost:3000/events');
+
+      if (response.ok) {
+        const result = await response.json()
+
+        setEvents(result.data)
+        console.log("state updated!")
+      } else {
+        console.log('Failed to fetch events!')
+      }
+    } catch (error) {
+      console.log("Network Error: ", error)
+    }
   }
 
   const handleSubmit = async (e) => {
@@ -105,8 +124,27 @@ function App() {
               >
                 Create Event
               </Button>
+              <Button 
+                type="submit" 
+                colorScheme="blue" 
+                width="full" 
+                mt={4}
+                onClick={fetchEvents}
+              >
+                Get Events
+              </Button>
             </VStack>
           </form>
+          <VStack spacing={4} mt={10}>
+            <Heading size="md">All Events</Heading>
+            {events.map((event, index) => (
+              <Box key={index} p={4} shadow="md" borderWidth="1px" w="full" borderRadius="md">
+                <Heading size="sm">{event.title}</Heading>
+                <p>{event.date} - {event.location}</p>
+              </Box>
+            ))}
+            {events.length === 0 && <p>No events found. Click the button to fetch!</p>}
+          </VStack>
         </Box>
       </VStack>
     </Container>
